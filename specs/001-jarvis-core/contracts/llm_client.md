@@ -1,8 +1,9 @@
 # Contract: LLMClient
 
 Internal protocol isolating all skills/routing from the concrete LLM provider (Constitution:
-"LLM access MUST be behind an internal interface"). The only module allowed to import the
-`anthropic` SDK is the Claude implementation of this protocol.
+"LLM access MUST be behind an internal interface"). Each concrete adapter is the only module
+allowed to import its provider's SDK — currently `openai_client.py` (in use, `openai` SDK) and
+`claude_client.py` (unused, kept as a working second adapter; see research.md §3 amendment).
 
 ## `classify_intent(text: str) -> IntentResult`
 

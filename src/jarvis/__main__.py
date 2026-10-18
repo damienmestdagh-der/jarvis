@@ -6,7 +6,7 @@ import argparse
 import sys
 
 from jarvis.app import build_app
-from jarvis.intent.claude_client import MissingApiKeyError
+from jarvis.intent.llm_client import MissingApiKeyError
 from jarvis.io.text_io import print_response, read_command_text
 
 

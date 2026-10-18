@@ -9,8 +9,8 @@ from __future__ import annotations
 
 import logging
 
-from jarvis.intent.claude_client import ClaudeLLMClient
 from jarvis.intent.models import Intent
+from jarvis.intent.openai_client import OpenAILLMClient
 from jarvis.intent.router import IntentRouter
 from jarvis.models import Command, CommandSource, EmptyCommandError, Response
 from jarvis.skills.question import QuestionAnsweringSkill
@@ -58,7 +58,7 @@ class JarvisApp:
 def build_app(api_key: str | None = None) -> JarvisApp:
     """Composition root: wires the concrete LLMClient and every registered
     Skill into a ready-to-use JarvisApp."""
-    llm = ClaudeLLMClient(api_key=api_key)
+    llm = OpenAILLMClient(api_key=api_key)
     router = IntentRouter(llm)
     registry = SkillRegistry([
         QuestionAnsweringSkill(llm),

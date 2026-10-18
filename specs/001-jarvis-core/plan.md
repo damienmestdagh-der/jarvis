@@ -19,10 +19,12 @@ logged locally, per the constitution's privacy principle.
 
 **Language/Version**: Python 3.12
 
-**Primary Dependencies**: `anthropic` (Claude API SDK, behind an internal `LLMClient`
-interface), `faster-whisper` (local speech-to-text), `sounddevice`/`soundfile` (local
-microphone capture, research.md §8), `pyttsx3` (local text-to-speech, uses Windows SAPI5),
-stdlib `sqlite3` (storage), `pytest` (testing)
+**Primary Dependencies**: `openai` (LLM API SDK, behind an internal `LLMClient` interface —
+originally implemented against Claude, swapped to OpenAI post-implementation per research.md
+§3 amendment; swapping again means writing one more adapter, not touching skills/routing),
+`faster-whisper` (local speech-to-text), `sounddevice`/`soundfile` (local microphone capture,
+research.md §8), `pyttsx3` (local text-to-speech, uses Windows SAPI5), stdlib `sqlite3`
+(storage), `pytest` (testing)
 
 **Storage**: SQLite, single local file (`%APPDATA%/Jarvis/jarvis.db`) for reminders/tasks
 
@@ -52,7 +54,7 @@ an extensible skill registry; reminders list expected to stay in the tens-to-hun
 - **I. Voice-First Interaction**: Voice (STT) and text input both feed the same
   `IntentRouter` → `Skill` → `Response` path; no behavior is voice-only. **PASS**
 - **II. Privacy & Local Control**: STT and TTS run entirely locally (`faster-whisper`,
-  `pyttsx3`); only command text goes to the Claude API, and only to fulfill that request.
+  `pyttsx3`); only command text goes to the LLM API (OpenAI), and only to fulfill that request.
   Every LLM call is appended to a local, user-readable log (timestamp, truncated text,
   provider). API key read from a local env var/config file, never committed. **PASS**
 - **III. Modular Skills Architecture**: `QuestionAnsweringSkill` and `ReminderSkill` each
@@ -94,7 +96,7 @@ src/
     ├── app.py              # Wiring: input source -> IntentRouter -> Skill -> output
     ├── intent/
     │   ├── router.py       # IntentRouter: text -> IntentResult
-    │   └── llm_client.py   # LLMClient protocol + Claude API implementation
+    │   └── llm_client.py   # LLMClient protocol (openai_client.py holds the concrete adapter)
     ├── skills/
     │   ├── base.py         # Skill contract (can_handle / execute)
     │   ├── question.py     # QuestionAnsweringSkill

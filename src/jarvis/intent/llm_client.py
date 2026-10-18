@@ -14,6 +14,12 @@ from typing import Protocol
 from jarvis.intent.models import Intent
 
 
+class MissingApiKeyError(RuntimeError):
+    """Raised by an LLMClient implementation when no API key is configured —
+    callers must turn this into a clear user-facing message, never an
+    unhandled traceback."""
+
+
 class LLMClient(Protocol):
     def classify_intent(self, text: str) -> Intent:
         """Raises on transport-level failure (network/auth); does not swallow

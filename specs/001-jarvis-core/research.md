@@ -25,19 +25,26 @@
 
 ## 3. LLM provider & integration pattern
 
-- **Decision**: Anthropic Claude API via the official `anthropic` Python SDK, accessed only
-  through an internal `LLMClient` protocol (methods: `classify_intent(text)`,
-  `answer_question(text)`). No skill or I/O module imports the `anthropic` package directly.
+- **Decision**: A cloud LLM API accessed only through an internal `LLMClient` protocol
+  (methods: `classify_intent(text)`, `answer_question(text)`). No skill or I/O module imports a
+  provider SDK directly.
 - **Rationale**: Satisfies Constitution's "LLM access behind an internal interface" constraint
-  directly — swapping to OpenAI or another provider later means writing one new adapter class,
-  not touching skills or routing logic. Claude's tool-use/structured-output support makes
-  reliable intent classification straightforward.
+  directly — swapping providers later means writing one new adapter class, not touching skills
+  or routing logic.
 - **Alternatives considered**:
   - Calling the LLM SDK directly from skills/router: rejected — violates the constitution's
     "pluggable LLM" constraint and would hard-couple core logic to one vendor.
   - Local LLM (Ollama) as the only option: rejected for v1 per the user's explicit choice of a
     cloud API; the `LLMClient` interface is shaped so a local-LLM adapter can be added later
     without redesign (constitution already anticipates this).
+
+- **Amendment (post-implementation)**: Initially built against the Anthropic Claude API
+  (`anthropic` SDK, `src/jarvis/intent/claude_client.py`). Swapped to the OpenAI API
+  (`openai` SDK, `src/jarvis/intent/openai_client.py`, model `gpt-4o-mini`) after the only API
+  key available turned out to be an OpenAI key, not an Anthropic one. This is exactly the swap
+  the `LLMClient` protocol was designed for: `claude_client.py` is left in place, unused, as a
+  working second adapter; only `app.py`'s `build_app()` wiring and the `OPENAI_API_KEY` env var
+  changed.
 
 ## 4. Intent classification mechanism
 

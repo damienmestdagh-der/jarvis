@@ -8,7 +8,7 @@ A personal voice/text assistant: ask it a question or ask it to remember somethi
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env   # then fill in ANTHROPIC_API_KEY
+copy .env.example .env   # then fill in OPENAI_API_KEY
 ```
 
 ## Run
@@ -36,5 +36,5 @@ feature was built from.
 ## Privacy
 
 Speech-to-text and text-to-speech run entirely on your machine. Only the text of a command is
-ever sent to the LLM (Anthropic Claude), and every such call is logged locally and readable at
+ever sent to the LLM (OpenAI), and every such call is logged locally and readable at
 `%APPDATA%/Jarvis/llm_calls.jsonl`.

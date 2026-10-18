@@ -15,6 +15,13 @@ tests for routing/skill-contract logic written before implementation.
 **Organization**: Tasks are grouped by user story (spec.md) to enable independent
 implementation and testing of each story.
 
+**Post-implementation amendment**: T023's `ClaudeLLMClient` was implemented as written below,
+then the LLM provider actually wired into `build_app()` was swapped to `OpenAILLMClient`
+(`src/jarvis/intent/openai_client.py`, `OPENAI_API_KEY`) once the only available API key turned
+out to be OpenAI's, not Anthropic's — see research.md §3 amendment. `ClaudeLLMClient` is left
+in place as a second, unused adapter. Task text below is kept as the historical record of what
+was built and in what order.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)

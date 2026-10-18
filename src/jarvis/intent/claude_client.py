@@ -10,6 +10,7 @@ from __future__ import annotations
 import os
 
 from jarvis.intent.call_log import log_call
+from jarvis.intent.llm_client import MissingApiKeyError
 from jarvis.intent.models import Intent
 
 _MODEL = "claude-sonnet-5-5"
@@ -53,11 +54,6 @@ _CLASSIFY_SYSTEM_PROMPT = (
     "reminders/tasks they already have, and 'unclear' if none of those fit or the command is "
     "too vague to act on."
 )
-
-
-class MissingApiKeyError(RuntimeError):
-    """Raised when no Anthropic API key is configured — callers must turn
-    this into a clear user-facing message, never an unhandled traceback."""
 
 
 class ClaudeLLMClient:

@@ -6,7 +6,7 @@ cover User Stories 1–3; the voice-mode step covers the voice half of User Stor
 ## Prerequisites
 
 - Python 3.12 installed and on `PATH`.
-- An Anthropic API key available as the `ANTHROPIC_API_KEY` environment variable (never
+- An OpenAI API key available as the `OPENAI_API_KEY` environment variable (never
   committed to the repo — see Constitution Principle II).
 - Project dependencies installed into a virtual environment:
   ```powershell
@@ -78,5 +78,5 @@ phrasing.
   produced (Edge Case: empty command).
 - Run with `--text "Remind me about stuff"` → assistant asks for a clearer description, no
   Reminder is created (Edge Case: reminder without a description).
-- Temporarily unset `ANTHROPIC_API_KEY` and run any command → a clear "cannot process this
+- Temporarily unset `OPENAI_API_KEY` and run any command → a clear "cannot process this
   right now" message, not a crash or hang (FR-009).
